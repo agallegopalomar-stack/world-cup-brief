@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Cup Brief</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #fff;
+      color: #1d1d1f;
+    }
+
+    main {
+      width: min(100%, 680px);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(3rem, 10vw, 5.75rem);
+      line-height: 1;
+      letter-spacing: -0.065em;
+    }
+
+    p {
+      margin: 24px 0 36px;
+      color: #6e6e73;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      letter-spacing: -0.02em;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 24px;
+      background: #0071e3;
+      color: #fff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+      transition: background 160ms ease, transform 160ms ease;
+    }
+
+    button:hover { background: #0077ed; }
+    button:active { transform: scale(0.97); }
+    button:focus-visible {
+      outline: 3px solid #0071e3;
+      outline-offset: 4px;
+    }
+
+    #message {
+      min-height: 1.5em;
+      margin: 22px 0 0;
+      color: #1d1d1f;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>World Cup Brief</h1>
+    <p>Mi primera aplicación creada con IA</p>
+    <button type="button" id="greeting-button">Mostrar mensaje</button>
+    <div id="message" aria-live="polite"></div>
+  </main>
+
+  <script>
+    const messages = [
+      "Hola Ángel",
+      "Bienvenido al Mundial 2026",
+      "Esta app la ha creado Codex"
+    ];
+
+    const button = document.querySelector("#greeting-button");
+    const message = document.querySelector("#message");
+
+    button.addEventListener("click", () => {
+      const randomIndex = Math.floor(Math.random() * messages.length);
+      message.textContent = messages[randomIndex];
+    });
+  </script>
+</body>
+</html>

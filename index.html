@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
   <title>World Cup Brief</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='.9em' font-size='58'%3E⚽%3C/text%3E%3C/svg%3E">
   <style>
     :root {
       color-scheme: light;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      color: #1d1d1f;
+      background: #fff;
     }
 
     * { box-sizing: border-box; }
@@ -15,80 +19,92 @@
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 48px 24px;
       background: #fff;
-      color: #1d1d1f;
     }
 
     main {
-      width: min(100%, 760px);
+      width: min(100%, 980px);
       margin: 0 auto;
+      padding: 28px 16px 64px;
     }
 
     .hero {
-      padding: 40px 0 48px;
+      padding: 30px 0 36px;
       text-align: center;
     }
 
+    h1, h2, h3, p { margin-top: 0; }
+
     h1 {
-      margin: 0;
-      font-size: clamp(3.4rem, 10vw, 6.25rem);
-      line-height: .98;
-      letter-spacing: -.07em;
+      margin-bottom: 14px;
+      font-size: clamp(3.3rem, 11vw, 6.4rem);
+      line-height: .94;
+      letter-spacing: -.075em;
     }
 
-    .subtitle {
-      margin: 22px 0 0;
-      color: #6e6e73;
-      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    h2 {
+      margin-bottom: 0;
+      font-size: clamp(1.55rem, 4vw, 2rem);
+      letter-spacing: -.045em;
+    }
+
+    h3 {
+      margin-bottom: 4px;
+      font-size: 1rem;
       letter-spacing: -.02em;
     }
 
-    .grid {
+    .subtitle, .muted {
+      color: #6e6e73;
+      line-height: 1.5;
+    }
+
+    .subtitle {
+      margin-bottom: 0;
+      font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+      letter-spacing: -.02em;
+    }
+
+    .dashboard {
       display: grid;
       gap: 18px;
     }
 
     .card {
-      padding: 28px;
+      padding: 24px;
       border: 1px solid #e5e5e7;
       border-radius: 24px;
       background: #fbfbfd;
       box-shadow: 0 1px 2px rgb(0 0 0 / 3%);
     }
 
+    .card-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
     .label {
-      margin: 0 0 12px;
+      margin-bottom: 8px;
       color: #6e6e73;
       font-size: .72rem;
       font-weight: 700;
-      letter-spacing: .09em;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: clamp(1.55rem, 4vw, 2rem);
-      letter-spacing: -.04em;
-    }
-
-    .summary {
-      min-height: 3.1em;
-      margin: 12px 0 20px;
-      color: #424245;
-      font-size: 1.05rem;
-      line-height: 1.5;
+      letter-spacing: .1em;
     }
 
     .button {
       border: 0;
       border-radius: 999px;
-      padding: 11px 18px;
+      padding: 11px 17px;
       background: #0071e3;
       color: #fff;
       cursor: pointer;
       font: inherit;
-      font-size: .95rem;
-      font-weight: 600;
+      font-size: .92rem;
+      font-weight: 650;
+      white-space: nowrap;
       transition: background 160ms ease, transform 160ms ease;
     }
 
@@ -97,41 +113,37 @@
     .button:focus-visible,
     .team-option:focus-within {
       outline: 3px solid #0071e3;
-      outline-offset: 4px;
+      outline-offset: 3px;
     }
 
-    .fixture {
+    .status {
       margin: 0;
-      font-size: clamp(1.35rem, 4vw, 1.8rem);
-      font-weight: 700;
-      letter-spacing: -.04em;
-    }
-
-    .fixture-details {
-      margin: 12px 0 0;
       color: #6e6e73;
-      line-height: 1.55;
+      font-size: .92rem;
     }
 
-    .fixture-details span { display: block; }
+    .status.error { color: #b42318; }
 
-    .teams {
+    .team-picker {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 20px;
+      gap: 10px;
+      max-height: 380px;
+      padding: 2px;
+      overflow: auto;
     }
 
     .team-option {
       position: relative;
       display: flex;
       align-items: center;
-      min-height: 54px;
-      padding: 14px 16px;
+      min-height: 52px;
+      padding: 12px 14px;
       border: 1px solid #dedee3;
       border-radius: 16px;
       background: #fff;
       cursor: pointer;
+      font-size: .92rem;
       font-weight: 600;
       transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
     }
@@ -151,18 +163,127 @@
       cursor: pointer;
     }
 
-    .saved-note {
-      min-height: 1.4em;
-      margin: 16px 0 0;
+    .empty {
+      margin: 0;
+      color: #6e6e73;
+      line-height: 1.5;
+    }
+
+    .news-list, .planning-list, .standings-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .team-brief, .match {
+      padding: 17px;
+      border: 1px solid #e5e5e7;
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .team-brief-top, .match-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .team-brief p {
+      margin: 7px 0 0;
+      color: #515154;
+      font-size: .93rem;
+      line-height: 1.45;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: #f1f1f3;
+      color: #515154;
+      font-size: .74rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .match.favorite {
+      border-color: #8ac4ff;
+      background: #f2f8ff;
+    }
+
+    .match-date {
+      margin-bottom: 8px;
+      color: #0066cc;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    .match-title {
+      margin-bottom: 5px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .match-meta {
+      margin: 0;
       color: #6e6e73;
       font-size: .9rem;
     }
 
+    .group-title {
+      margin: 4px 0 0;
+      font-size: 1.1rem;
+      letter-spacing: -.025em;
+    }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      min-width: 390px;
+      border-collapse: collapse;
+      font-size: .9rem;
+    }
+
+    th, td {
+      padding: 11px 8px;
+      border-bottom: 1px solid #e5e5e7;
+      text-align: right;
+    }
+
+    th {
+      color: #6e6e73;
+      font-size: .72rem;
+      letter-spacing: .05em;
+    }
+
+    th:nth-child(2), td:nth-child(2) { text-align: left; }
+
+    tr.favorite-row { background: #eef6ff; }
+    tr:last-child td { border-bottom: 0; }
+
+    .source {
+      margin: 22px 4px 0;
+      color: #86868b;
+      font-size: .78rem;
+      line-height: 1.5;
+    }
+
+    .source a { color: inherit; }
+
+    @media (min-width: 720px) {
+      main { padding: 46px 24px 76px; }
+      .hero { padding: 34px 0 44px; }
+      .card { padding: 28px; }
+      .team-picker { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .planning-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 460px) {
-      body { padding: 24px 16px; }
-      .hero { padding: 28px 0 36px; }
-      .card { padding: 22px; border-radius: 20px; }
-      .teams { grid-template-columns: 1fr; }
+      .card-head { align-items: start; flex-direction: column; }
+      .button { width: 100%; }
     }
   </style>
 </head>
@@ -170,111 +291,392 @@
   <main>
     <header class="hero">
       <h1>World Cup Brief</h1>
-      <p class="subtitle">Mi primera aplicación creada con IA</p>
+      <p class="subtitle">Seguimiento simple del Mundial 2026</p>
     </header>
 
-    <section class="grid" aria-label="Resumen del Mundial">
-      <article class="card">
-        <p class="label">NEWS</p>
-        <h2>Resumen del día</h2>
-        <p class="summary" id="daily-summary" aria-live="polite"></p>
-        <button class="button" type="button" id="refresh-news">Actualizar resumen</button>
-      </article>
-
-      <article class="card">
-        <p class="label">PLANNING</p>
-        <p class="fixture">España 🇪🇸 vs Arabia Saudí 🇸🇦</p>
-        <p class="fixture-details">
-          <span>21 junio · 18:00</span>
-          <span>MetLife Stadium</span>
-        </p>
-      </article>
-
+    <section class="dashboard" aria-label="Panel del Mundial 2026">
       <section class="card" aria-labelledby="favorites-title">
-        <p class="label">MY TEAMS</p>
-        <h2 id="favorites-title">Equipos favoritos</h2>
-        <div class="teams">
-          <label class="team-option">
-            <input type="checkbox" name="team" value="España 🇪🇸">
-            España 🇪🇸
-          </label>
-          <label class="team-option">
-            <input type="checkbox" name="team" value="Brasil 🇧🇷">
-            Brasil 🇧🇷
-          </label>
-          <label class="team-option">
-            <input type="checkbox" name="team" value="Argentina 🇦🇷">
-            Argentina 🇦🇷
-          </label>
-          <label class="team-option">
-            <input type="checkbox" name="team" value="Francia 🇫🇷">
-            Francia 🇫🇷
-          </label>
+        <div class="card-head">
+          <div>
+            <p class="label">MY TEAMS</p>
+            <h2 id="favorites-title">Equipos favoritos</h2>
+          </div>
+          <button class="button" id="refresh-button" type="button">Actualizar datos</button>
         </div>
-        <p class="saved-note" id="saved-note" aria-live="polite"></p>
+        <div class="team-picker" id="team-picker" aria-live="polite"></div>
+        <p class="status" id="app-status">Cargando selecciones y calendario real…</p>
+      </section>
+
+      <section class="card" aria-labelledby="news-title">
+        <div class="card-head">
+          <div>
+            <p class="label">NEWS</p>
+            <h2 id="news-title">Tus selecciones</h2>
+          </div>
+        </div>
+        <div class="news-list" id="news-list"></div>
+      </section>
+
+      <section class="card" aria-labelledby="planning-title">
+        <div class="card-head">
+          <div>
+            <p class="label">PLANNING</p>
+            <h2 id="planning-title">Próximos partidos</h2>
+          </div>
+          <span class="pill">Favoritos en azul</span>
+        </div>
+        <div class="planning-list" id="planning-list"></div>
+      </section>
+
+      <section class="card" aria-labelledby="standings-title">
+        <div class="card-head">
+          <div>
+            <p class="label">STANDINGS</p>
+            <h2 id="standings-title">Clasificación de grupos</h2>
+          </div>
+        </div>
+        <div class="standings-list" id="standings-list"></div>
       </section>
     </section>
+
+    <p class="source">
+      Datos de partidos y resultados: <a href="https://www.espn.com/soccer/league/_/name/fifa.world" target="_blank" rel="noreferrer">ESPN</a>.
+      Si esa fuente pública deja de estar disponible, consulta el <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/match-center" target="_blank" rel="noreferrer">centro de partidos de FIFA</a>.
+    </p>
   </main>
 
   <script>
-    const summaries = [
-      "España ultima los detalles para su estreno con una sesión táctica cargada de energía.",
-      "Las grandes selecciones afinan sus convocatorias mientras crece la expectación por el torneo.",
-      "El MetLife Stadium se prepara para una noche de fútbol con ambiente de final.",
-      "Brasil y Argentina ya miran al calendario: cada partido cuenta desde el primer día.",
-      "La cuenta atrás para el Mundial 2026 entra en su fase más emocionante."
-    ];
+    const DATA_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=500";
+    const STORAGE_KEY = "world-cup-brief-favorite-teams-v2";
 
-    const storageKey = "world-cup-brief-favorite-teams";
-    const summary = document.querySelector("#daily-summary");
-    const refreshNews = document.querySelector("#refresh-news");
-    const teamInputs = [...document.querySelectorAll('input[name="team"]')];
-    const savedNote = document.querySelector("#saved-note");
+    const translations = {
+      "Algeria": "Argelia", "Argentina": "Argentina", "Australia": "Australia",
+      "Austria": "Austria", "Belgium": "Bélgica", "Bosnia-Herzegovina": "Bosnia y Herzegovina",
+      "Brazil": "Brasil", "Canada": "Canadá", "Cape Verde": "Cabo Verde",
+      "Colombia": "Colombia", "Congo DR": "R. D. del Congo", "Croatia": "Croacia",
+      "Curaçao": "Curazao", "Czechia": "Chequia", "Ecuador": "Ecuador",
+      "Egypt": "Egipto", "England": "Inglaterra", "France": "Francia",
+      "Germany": "Alemania", "Ghana": "Ghana", "Haiti": "Haití", "Iran": "Irán",
+      "Iraq": "Irak", "Ivory Coast": "Costa de Marfil", "Japan": "Japón",
+      "Jordan": "Jordania", "Mexico": "México", "Morocco": "Marruecos",
+      "Netherlands": "Países Bajos", "New Zealand": "Nueva Zelanda", "Norway": "Noruega",
+      "Panama": "Panamá", "Paraguay": "Paraguay", "Portugal": "Portugal",
+      "Qatar": "Catar", "Saudi Arabia": "Arabia Saudí", "Scotland": "Escocia",
+      "Senegal": "Senegal", "South Africa": "Sudáfrica", "South Korea": "Corea del Sur",
+      "Spain": "España", "Sweden": "Suecia", "Switzerland": "Suiza",
+      "Tunisia": "Túnez", "Türkiye": "Turquía", "United States": "Estados Unidos",
+      "Uruguay": "Uruguay", "Uzbekistan": "Uzbekistán"
+    };
 
-    function showRandomSummary() {
-      const index = Math.floor(Math.random() * summaries.length);
-      summary.textContent = summaries[index];
+    const flags = {
+      "Algeria": "🇩🇿", "Argentina": "🇦🇷", "Australia": "🇦🇺", "Austria": "🇦🇹",
+      "Belgium": "🇧🇪", "Bosnia-Herzegovina": "🇧🇦", "Brazil": "🇧🇷", "Canada": "🇨🇦",
+      "Cape Verde": "🇨🇻", "Colombia": "🇨🇴", "Congo DR": "🇨🇩", "Croatia": "🇭🇷",
+      "Curaçao": "🇨🇼", "Czechia": "🇨🇿", "Ecuador": "🇪🇨", "Egypt": "🇪🇬",
+      "England": "🏴", "France": "🇫🇷", "Germany": "🇩🇪", "Ghana": "🇬🇭",
+      "Haiti": "🇭🇹", "Iran": "🇮🇷", "Iraq": "🇮🇶", "Ivory Coast": "🇨🇮",
+      "Japan": "🇯🇵", "Jordan": "🇯🇴", "Mexico": "🇲🇽", "Morocco": "🇲🇦",
+      "Netherlands": "🇳🇱", "New Zealand": "🇳🇿", "Norway": "🇳🇴", "Panama": "🇵🇦",
+      "Paraguay": "🇵🇾", "Portugal": "🇵🇹", "Qatar": "🇶🇦", "Saudi Arabia": "🇸🇦",
+      "Scotland": "🏴", "Senegal": "🇸🇳", "South Africa": "🇿🇦", "South Korea": "🇰🇷",
+      "Spain": "🇪🇸", "Sweden": "🇸🇪", "Switzerland": "🇨🇭", "Tunisia": "🇹🇳",
+      "Türkiye": "🇹🇷", "United States": "🇺🇸", "Uruguay": "🇺🇾", "Uzbekistan": "🇺🇿"
+    };
+
+    const fallbackTeams = Object.keys(translations);
+    const legacyNames = {
+      "España 🇪🇸": "Spain",
+      "Brasil 🇧🇷": "Brazil",
+      "Argentina 🇦🇷": "Argentina",
+      "Francia 🇫🇷": "France"
+    };
+
+    const picker = document.querySelector("#team-picker");
+    const status = document.querySelector("#app-status");
+    const newsList = document.querySelector("#news-list");
+    const planningList = document.querySelector("#planning-list");
+    const standingsList = document.querySelector("#standings-list");
+    const refreshButton = document.querySelector("#refresh-button");
+
+    let events = [];
+    let teams = fallbackTeams.map((name) => ({ name, group: "" }));
+
+    function displayName(name) {
+      return `${translations[name] || name} ${flags[name] || "🏳️"}`;
     }
 
-    function getSavedTeams() {
+    function text(value) {
+      return String(value || "").replace(/[&<>"']/g, (character) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      })[character]);
+    }
+
+    function getGroup(competition) {
+      const source = [
+        competition.altGameNote,
+        competition.headline,
+        competition.group,
+        competition.notes && competition.notes.map((note) => note.headline || note.text).join(" ")
+      ].filter(Boolean).join(" ");
+      const match = source.match(/Group\s+([A-L])/i);
+      return match ? `Grupo ${match[1].toUpperCase()}` : "";
+    }
+
+    function normaliseEvent(event) {
+      const competition = event.competitions && event.competitions[0];
+      if (!competition) return null;
+      const competitors = competition.competitors || [];
+      const home = competitors.find((team) => team.homeAway === "home");
+      const away = competitors.find((team) => team.homeAway === "away");
+      if (!home || !away) return null;
+
+      return {
+        date: new Date(competition.date || event.date),
+        group: getGroup(competition),
+        home: home.team.displayName,
+        away: away.team.displayName,
+        homeScore: Number(home.score),
+        awayScore: Number(away.score),
+        completed: Boolean(competition.status && competition.status.type.completed),
+        state: competition.status && competition.status.type.state,
+        detail: competition.status && competition.status.type.detail,
+        venue: (competition.venue && competition.venue.fullName) || "",
+        city: competition.venue && competition.venue.address && competition.venue.address.city || ""
+      };
+    }
+
+    function readSavedTeams() {
       try {
-        const saved = JSON.parse(localStorage.getItem(storageKey));
-        return Array.isArray(saved) ? saved : [];
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (Array.isArray(saved)) return saved;
+        const previous = JSON.parse(localStorage.getItem("world-cup-brief-favorite-teams"));
+        return Array.isArray(previous) ? previous.map((name) => legacyNames[name] || name) : [];
       } catch {
         return [];
       }
     }
 
+    function savedTeams() {
+      return new Set(readSavedTeams());
+    }
+
     function saveTeams() {
-      const selected = teamInputs
-        .filter((input) => input.checked)
-        .map((input) => input.value);
+      const selected = [...picker.querySelectorAll("input:checked")].map((input) => input.value);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(selected));
+        status.textContent = selected.length
+          ? `${selected.length} selección${selected.length === 1 ? "" : "es"} guardada${selected.length === 1 ? "" : "s"} en este navegador.`
+          : "Selecciona las selecciones que quieres seguir.";
+        status.className = "status";
+      } catch {
+        status.textContent = "No se ha podido guardar la selección en este navegador.";
+        status.className = "status error";
+      }
+      renderData();
+    }
+
+    function renderPicker() {
+      const selected = savedTeams();
+      picker.innerHTML = teams.map((team) => `
+        <label class="team-option">
+          <input type="checkbox" value="${text(team.name)}" ${selected.has(team.name) ? "checked" : ""}>
+          <span>${text(displayName(team.name))}</span>
+        </label>
+      `).join("");
+      picker.querySelectorAll("input").forEach((input) => input.addEventListener("change", saveTeams));
+    }
+
+    function formatDate(date) {
+      return new Intl.DateTimeFormat("es-ES", {
+        day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
+        timeZone: "Europe/Madrid"
+      }).format(date).replace(".", "");
+    }
+
+    function groupTeams(group) {
+      return teams.filter((team) => team.group === group).map((team) => team.name);
+    }
+
+    function standingsFor(group) {
+      const names = groupTeams(group);
+      const table = new Map(names.map((name) => [name, { name, played: 0, points: 0, gf: 0, ga: 0 }]));
+
+      events.filter((event) => event.group === group && event.completed).forEach((event) => {
+        const home = table.get(event.home);
+        const away = table.get(event.away);
+        if (!home || !away || Number.isNaN(event.homeScore) || Number.isNaN(event.awayScore)) return;
+
+        home.played += 1;
+        away.played += 1;
+        home.gf += event.homeScore;
+        home.ga += event.awayScore;
+        away.gf += event.awayScore;
+        away.ga += event.homeScore;
+
+        if (event.homeScore > event.awayScore) home.points += 3;
+        if (event.homeScore < event.awayScore) away.points += 3;
+        if (event.homeScore === event.awayScore) {
+          home.points += 1;
+          away.points += 1;
+        }
+      });
+
+      return [...table.values()].sort((a, b) =>
+        b.points - a.points || (b.gf - b.ga) - (a.gf - a.ga) || b.gf - a.gf || a.name.localeCompare(b.name)
+      );
+    }
+
+    function matchLabel(event) {
+      return `${displayName(event.home)} vs ${displayName(event.away)}`;
+    }
+
+    function renderNews(favorites) {
+      if (!favorites.length) {
+        newsList.innerHTML = '<p class="empty">Elige una o varias selecciones para ver su último resultado, próximo partido y situación en el grupo.</p>';
+        return;
+      }
+
+      const now = new Date();
+      newsList.innerHTML = favorites.map((name) => {
+        const ownMatches = events.filter((event) => event.home === name || event.away === name);
+        const last = ownMatches.filter((event) => event.completed).sort((a, b) => b.date - a.date)[0];
+        const next = ownMatches.filter((event) => event.state === "pre" && event.date >= now).sort((a, b) => a.date - b.date)[0];
+        const group = teams.find((team) => team.name === name)?.group || "";
+        const table = group ? standingsFor(group) : [];
+        const position = table.findIndex((row) => row.name === name);
+
+        const result = last
+          ? `Último resultado · ${displayName(last.home)} ${last.homeScore}–${last.awayScore} ${displayName(last.away)}`
+          : "Último resultado · Aún no hay un partido finalizado.";
+        const upcoming = next
+          ? `Próximo partido · ${formatDate(next.date)} · ${matchLabel(next)}`
+          : "Próximo partido · Pendiente de confirmación.";
+        const standing = position >= 0
+          ? `Situación · ${group} · ${position + 1}.º · ${table[position].points} PTS`
+          : "Situación · Grupo pendiente de publicación.";
+
+        return `
+          <article class="team-brief">
+            <div class="team-brief-top">
+              <h3>${text(displayName(name))}</h3>
+              <span class="pill">${text(group || "Mundial 2026")}</span>
+            </div>
+            <p>${text(result)}</p>
+            <p>${text(upcoming)}</p>
+            <p>${text(standing)}</p>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderPlanning(favorites) {
+      const now = new Date();
+      const upcoming = events
+        .filter((event) => !event.completed && event.date >= new Date(now.getTime() - 3 * 60 * 60 * 1000))
+        .sort((a, b) => a.date - b.date)
+        .slice(0, 12);
+
+      if (!upcoming.length) {
+        planningList.innerHTML = '<p class="empty">No hay próximos partidos disponibles en este momento.</p>';
+        return;
+      }
+
+      planningList.innerHTML = upcoming.map((event) => {
+        const favorite = favorites.includes(event.home) || favorites.includes(event.away);
+        const place = [event.venue, event.city].filter(Boolean).join(" · ") || "Sede pendiente";
+        return `
+          <article class="match ${favorite ? "favorite" : ""}">
+            <div class="match-date">${text(formatDate(event.date))}${event.state === "in" ? " · En juego" : ""}</div>
+            <div class="match-title">${text(matchLabel(event))}</div>
+            <p class="match-meta">${text(place)}${event.group ? ` · ${text(event.group)}` : ""}</p>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderStandings(favorites) {
+      const groups = [...new Set(favorites.map((name) => teams.find((team) => team.name === name)?.group).filter(Boolean))];
+
+      if (!groups.length) {
+        standingsList.innerHTML = '<p class="empty">Selecciona una selección para consultar la clasificación de su grupo.</p>';
+        return;
+      }
+
+      standingsList.innerHTML = groups.sort().map((group) => {
+        const table = standingsFor(group);
+        return `
+          <section>
+            <h3 class="group-title">${text(group)}</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>#</th><th>Selección</th><th>PJ</th><th>PTS</th><th>GF</th><th>GC</th></tr>
+                </thead>
+                <tbody>
+                  ${table.map((row, index) => `
+                    <tr class="${favorites.includes(row.name) ? "favorite-row" : ""}">
+                      <td>${index + 1}</td><td>${text(displayName(row.name))}</td>
+                      <td>${row.played}</td><td>${row.points}</td><td>${row.gf}</td><td>${row.ga}</td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        `;
+      }).join("");
+    }
+
+    function renderData() {
+      const favorites = [...savedTeams()].filter((name) => teams.some((team) => team.name === name));
+      renderNews(favorites);
+      renderPlanning(favorites);
+      renderStandings(favorites);
+    }
+
+    async function loadData() {
+      refreshButton.disabled = true;
+      refreshButton.textContent = "Actualizando…";
+      status.textContent = "Consultando partidos y resultados del Mundial 2026…";
+      status.className = "status";
 
       try {
-        localStorage.setItem(storageKey, JSON.stringify(selected));
-        savedNote.textContent = selected.length
-          ? "Tus favoritos se han guardado."
-          : "Selecciona los equipos que quieras seguir.";
-      } catch {
-        savedNote.textContent = "No se ha podido guardar la selección en este navegador.";
+        const response = await fetch(DATA_URL);
+        if (!response.ok) throw new Error("La fuente no ha respondido correctamente.");
+        const payload = await response.json();
+        events = (payload.events || []).map(normaliseEvent).filter(Boolean).sort((a, b) => a.date - b.date);
+
+        const groups = new Map();
+        events.filter((event) => event.group).forEach((event) => {
+          [event.home, event.away].forEach((name) => {
+            if (translations[name]) groups.set(name, event.group);
+          });
+        });
+
+        teams = [...groups.keys()]
+          .sort((a, b) => (translations[a] || a).localeCompare(translations[b] || b, "es"))
+          .map((name) => ({ name, group: groups.get(name) }));
+
+        if (teams.length !== 48) throw new Error("La fuente no ha devuelto la lista completa de selecciones.");
+        renderPicker();
+        renderData();
+        status.textContent = "Datos actualizados desde el calendario público de ESPN.";
+      } catch (error) {
+        teams = fallbackTeams.map((name) => ({ name, group: "" }));
+        renderPicker();
+        renderData();
+        status.textContent = "No se ha podido cargar la fuente en directo. Puedes guardar favoritos; consulta el centro de partidos de FIFA como alternativa.";
+        status.className = "status error";
+      } finally {
+        refreshButton.disabled = false;
+        refreshButton.textContent = "Actualizar datos";
       }
     }
 
-    function restoreTeams() {
-      const savedTeams = getSavedTeams();
-      teamInputs.forEach((input) => {
-        input.checked = savedTeams.includes(input.value);
-      });
-      savedNote.textContent = savedTeams.length
-        ? "Tus equipos favoritos se han recuperado."
-        : "Selecciona los equipos que quieras seguir.";
-    }
-
-    refreshNews.addEventListener("click", showRandomSummary);
-    teamInputs.forEach((input) => input.addEventListener("change", saveTeams));
-
-    showRandomSummary();
-    restoreTeams();
+    refreshButton.addEventListener("click", loadData);
+    renderPicker();
+    renderData();
+    loadData();
   </script>
 </body>
 </html>

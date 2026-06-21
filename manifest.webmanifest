@@ -1,0 +1,22 @@
+{
+  "name": "World Cup Brief",
+  "short_name": "World Cup Brief",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f9ff",
+  "theme_color": "#f5f8ff",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "apple-touch-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

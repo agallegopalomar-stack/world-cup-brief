@@ -10,7 +10,6 @@
     set("#planning-list",`<div class="skeleton-stack">${card(["w35","w85","w70"])}${card(["w40","w75","w60"])}${card(["w30","w80","w65"])}</div>`);
     set("#standings-list",`<div class="skeleton-card skeleton-table" aria-hidden="true">${line("w35")}${line("w95")}${line("w90")}${line("w92")}${line("w80")}</div>`);
   }
+  window.WCBShowSkeleton=showSkeleton;
   showSkeleton();
-  const refresh=document.querySelector("#refresh-button");
-  if(refresh)refresh.addEventListener("click",()=>setTimeout(showSkeleton,0));
 })();
